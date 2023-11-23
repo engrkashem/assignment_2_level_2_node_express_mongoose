@@ -1,5 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { TAddress, TFullName, TOrder, TUser } from './users.interface';
+import bcrypt from 'bcrypt';
+import config from '../../config';
 
 const emailRegEx =
   // eslint-disable-next-line no-useless-escape
@@ -46,7 +48,7 @@ const orderSchema = new Schema<TOrder>({
 });
 
 // main Schema
-const userSchema = new Schema<TUser>({
+export const userSchema = new Schema<TUser>({
   userId: {
     type: Number,
     required: [true, 'User ID is required'],
@@ -77,7 +79,12 @@ const userSchema = new Schema<TUser>({
   hobbies: [{ type: String }],
   address: { type: addressSchema, required: [true, 'Address is required'] },
   orders: [{ type: orderSchema }],
-  isDeleted: { type: Boolean },
+});
+
+userSchema.pre('save', async function (next) {
+  // const user=this;
+  this.password = await bcrypt.hash(this.password, Number(config.saltRounds));
+  next();
 });
 
 /********** Model (Schema) **********/

@@ -16,13 +16,7 @@ const createUser = async (req: Request, res: Response) => {
   } catch (err) {
     res
       .status(400)
-      .json(
-        getErrorResponse(
-          false,
-          'something went wrong. User creation is failed',
-          err,
-        ),
-      );
+      .json(getErrorResponse(false, 'User creation request is denied', err));
   }
 };
 

@@ -16,7 +16,10 @@ app.use('/api/users', userRoutes);
 
 /********** root api endpoints **********/
 app.get('/', (req: Request, res: Response) => {
-  res.send('Assignment2 server is running...');
+  res.json({
+    success: true,
+    message: 'Assignment2 server is running...',
+  });
 });
 
 export default app;
