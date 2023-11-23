@@ -64,7 +64,6 @@ export const userSchema = new Schema<TUser>(
     password: {
       type: String,
       required: [true, 'Password is required'],
-      trim: true,
       maxlength: [20, 'Last name must be less than 20 characters'],
       minlength: [3, 'Password is too short. min 3 characters is needed.'],
     },

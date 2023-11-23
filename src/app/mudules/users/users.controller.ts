@@ -4,11 +4,17 @@ import {
   getErrorResponse,
   getSuccessResponse,
 } from '../../utility/responseFunction';
+import userValidationSchema from './users.validation';
 
 const createUser = async (req: Request, res: Response) => {
   try {
     const { user: userData } = req.body;
-    const result = await userServices.createUserToDB(userData);
+
+    // zod validation
+    const zodParsedUserData = userValidationSchema.parse(userData);
+
+    // calling service function to create user to DB
+    const result = await userServices.createUserToDB(zodParsedUserData);
 
     res
       .status(201)

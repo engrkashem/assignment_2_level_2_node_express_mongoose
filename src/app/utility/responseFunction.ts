@@ -13,7 +13,7 @@ const getErrorResponse = (success: boolean, message: string, error: any) => {
     message: message,
     error: {
       code: 404,
-      description: error.message || message,
+      description: error,
     },
   };
 };
