@@ -88,6 +88,9 @@ export const userSchema = new Schema<TUser>(
     toJSON: {
       transform(doc, ret) {
         delete ret.password;
+        if (ret.orders.length == 0) {
+          delete ret.orders;
+        }
       },
     },
   },
