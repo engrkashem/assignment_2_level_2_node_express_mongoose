@@ -69,7 +69,6 @@ export const userSchema = new Schema<TUser>(
     },
     fullName: {
       type: fullNameSchema,
-      required: [true, 'Full name is required'],
     },
     age: { type: Number, required: [true, 'Age is required'] },
     email: {
