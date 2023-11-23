@@ -23,7 +23,7 @@ export const userValidationSchema = z.object({
   userId: z.number(),
   username: z.string().trim().min(1),
   password: z.string().min(3).max(20),
-  fullName: fullNameValidationSchema.optional(),
+  fullName: fullNameValidationSchema,
   age: z.number(),
   email: z.string().email().trim(),
   isActive: z.boolean(),

@@ -69,6 +69,7 @@ export const userSchema = new Schema<TUser>(
     },
     fullName: {
       type: fullNameSchema,
+      required: [true, 'Full name is required'],
     },
     age: { type: Number, required: [true, 'Age is required'] },
     email: {
@@ -102,13 +103,6 @@ userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, Number(config.saltRounds));
   next();
 });
-
-// pre middleware to save
-// userSchema.post('save', async function (userData, next) {
-//   // delete userData['password'];
-
-//   next();
-// });
 
 /********** Model (Schema) **********/
 export const User = model<TUser>('User', userSchema);
