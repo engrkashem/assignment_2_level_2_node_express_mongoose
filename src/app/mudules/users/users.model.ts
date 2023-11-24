@@ -1,8 +1,15 @@
 import { Schema, model } from 'mongoose';
-import { TAddress, TFullName, TOrder, TUser } from './users.interface';
+import {
+  TAddress,
+  TFullName,
+  TOrder,
+  TUser,
+  UserModel,
+} from './users.interface';
 import bcrypt from 'bcrypt';
 import config from '../../config';
 
+// reEx to validate email
 const emailRegEx =
   // eslint-disable-next-line no-useless-escape
   /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -104,5 +111,10 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+/********** Custom static method **********/
+userSchema.statics.isUserExists = async (userId: number) => {
+  return await User.exists({ userId: userId });
+};
+
 /********** Model (Schema) **********/
-export const User = model<TUser>('User', userSchema);
+export const User = model<TUser, UserModel>('User', userSchema);

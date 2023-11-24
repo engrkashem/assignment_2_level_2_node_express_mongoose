@@ -1,3 +1,8 @@
+/********** Interfaces for Schema **********/
+
+import { Model } from 'mongoose';
+
+// sub interfaces
 export type TFullName = {
   firstName: string;
   lastName: string;
@@ -15,6 +20,7 @@ export type TOrder = {
   quantity: number;
 };
 
+// main interface
 export type TUser = {
   userId: number;
   username: string;
@@ -27,3 +33,9 @@ export type TUser = {
   address: TAddress;
   orders?: TOrder[];
 };
+
+/********** Model for Custom static method **********/
+export interface UserModel extends Model<TUser> {
+  // eslint-disable-next-line no-unused-vars
+  isUserExists(userId: number): Promise<TUser | null>;
+}

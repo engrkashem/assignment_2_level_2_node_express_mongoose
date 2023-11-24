@@ -40,7 +40,22 @@ const getAllUser = async (req: Request, res: Response) => {
   }
 };
 
+const getUserById = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    const result = await userServices.getUserByIdFromDB(parseInt(userId));
+
+    res
+      .status(200)
+      .json(getSuccessResponse(true, 'User data is available', result));
+  } catch (err) {
+    res.status(400).json(getErrorResponse(false, 'Invalid request', err));
+  }
+};
+
 export const userControllers = {
   createUser,
   getAllUser,
+  getUserById,
 };
