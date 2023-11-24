@@ -28,4 +28,10 @@ router.put('/:userId/orders', userControllers.addProduct);
 // retrieve all order of a user
 router.get('/:userId/orders', userControllers.getAllOrderByUserId);
 
+// retrieve calculated price for all order of a user
+router.get(
+  '/:userId/orders/total-price',
+  userControllers.getTotalPriceOfUserById,
+);
+
 export const userRoutes = router;
