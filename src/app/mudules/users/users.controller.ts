@@ -8,7 +8,7 @@ import userValidationSchema from './users.validation';
 
 const createUser = async (req: Request, res: Response) => {
   try {
-    const { user: userData } = req.body;
+    const userData = req.body;
 
     // zod validation
     const zodParsedUserData = userValidationSchema.parse(userData);
@@ -57,6 +57,33 @@ const getUserById = async (req: Request, res: Response) => {
   }
 };
 
+const updateUserById = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    const updatedUserData: object = req.body;
+
+    // checking if any data available that need to be updated
+    if (Object.keys(updatedUserData).length == 0) {
+      throw new Error('No data is received that need to be updated');
+    }
+
+    // send request to service function of updating user
+    const result = await userServices.updateUserByIdFromDB(
+      parseInt(userId),
+      updatedUserData,
+    );
+
+    res
+      .status(200)
+      .json(getSuccessResponse(true, 'User info Updated successfully', result));
+  } catch (err) {
+    res
+      .status(400)
+      .json(getErrorResponse(false, 'User Not found/Invalid request', err));
+  }
+};
+
 const deleteUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -79,4 +106,5 @@ export const userControllers = {
   getAllUser,
   getUserById,
   deleteUser,
+  updateUserById,
 };
