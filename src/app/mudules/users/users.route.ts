@@ -4,7 +4,7 @@ import { userControllers } from './users.controller';
 /********** Router **********/
 const router = express.Router();
 
-/****** Creating routes for API endpoints using controller function ******/
+/********** Users endpoint routes **********/
 //crete user
 router.post('/', userControllers.createUser);
 
@@ -19,5 +19,9 @@ router.put('/:userId', userControllers.updateUserById);
 
 // delete user bu userId from db
 router.delete('/:userId', userControllers.deleteUser);
+
+/********** Orders endpoint routes **********/
+
+router.put('/:userId/orders', userControllers.addProduct);
 
 export const userRoutes = router;

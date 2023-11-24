@@ -4,7 +4,12 @@ import {
   getErrorResponse,
   getSuccessResponse,
 } from '../../utility/responseFunction';
-import userValidationSchema from './users.validation';
+import userValidationSchema, {
+  orderValidationSchema,
+} from './users.validation';
+import { TOrder } from './users.interface';
+
+/********** Users CRUD controllers function **********/
 
 const createUser = async (req: Request, res: Response) => {
   try {
@@ -91,13 +96,36 @@ const deleteUser = async (req: Request, res: Response) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
     const result = await userServices.deleteUserFromDB(parseInt(userId));
 
-    res.status(200).json({
-      success: true,
-      message: 'User deleted successfully!',
-      data: null,
-    });
+    res
+      .status(200)
+      .json(getSuccessResponse(true, 'User deleted successfully!', null));
   } catch (err) {
     res.status(404).json(getErrorResponse(false, 'User not found', err));
+  }
+};
+
+/********** Orders CRUD controllers function **********/
+
+const addProduct = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const order: object = req.body;
+
+    const zodParsedOrder: TOrder = orderValidationSchema.parse(order);
+
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+    const result = await userServices.addProductToUserIntoDB(
+      parseInt(userId),
+      zodParsedOrder,
+    );
+
+    res
+      .status(200)
+      .json(getSuccessResponse(true, 'Order created successfully!', null));
+  } catch (err) {
+    res
+      .status(400)
+      .json(getErrorResponse(false, 'Invalid data format/User not found', err));
   }
 };
 
@@ -107,4 +135,5 @@ export const userControllers = {
   getUserById,
   deleteUser,
   updateUserById,
+  addProduct,
 };
