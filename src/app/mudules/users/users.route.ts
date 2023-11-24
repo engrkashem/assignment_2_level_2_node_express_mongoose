@@ -22,7 +22,7 @@ router.delete('/:userId', userControllers.deleteUser);
 
 /********** Orders endpoint routes **********/
 
-// add order
+// add order to a specific user orders
 router.put('/:userId/orders', userControllers.addProduct);
 
 // retrieve all order of a user

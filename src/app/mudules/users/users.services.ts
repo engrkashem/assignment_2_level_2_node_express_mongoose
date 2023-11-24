@@ -16,6 +16,7 @@ const createUserToDB = async (userData: TUser) => {
 };
 
 const getAllUsersFromDB = async () => {
+  // aggregating for filtering some fields to show in the response
   const result = await User.aggregate([
     { $project: { username: 1, fullName: 1, age: 1, email: 1, address: 1 } },
   ]);
@@ -23,19 +24,24 @@ const getAllUsersFromDB = async () => {
 };
 
 const getUserByIdFromDB = async (userId: number) => {
+  // check if user already exists
   const response = await User.isUserExists(userId);
 
+  // throw error if user not found
   if (!response) {
     throw new Error('User does not exists.');
   }
 
+  // retrieve data of a specific user from db
   const result = await User.findOne({ userId: userId });
 
   return result;
 };
 
 const deleteUserFromDB = async (userId: number) => {
+  // check if user already exists
   if (await User.isUserExists(userId)) {
+    // deleting a specific user from db
     const result = await User.deleteOne({ userId: userId });
     return result;
   } else throw new Error('User not found');
@@ -45,14 +51,18 @@ const updateUserByIdFromDB = async (
   userId: number,
   updatedUserData: object,
 ) => {
+  // check if user already exists
   if (await User.isUserExists(userId)) {
+    // updating info of a specific user into db
     const result = await User.updateOne({ userId: userId }, updatedUserData);
     return result;
   } else throw new Error('User not found');
 };
 
 const addProductToUserIntoDB = async (userId: number, order: TOrder) => {
+  // check if user already exists
   if (await User.isUserExists(userId)) {
+    // filtering required user and inserting order to his orders array
     const result = await User.findOneAndUpdate(
       { userId: userId },
       { $push: { orders: order } },
@@ -65,7 +75,9 @@ const addProductToUserIntoDB = async (userId: number, order: TOrder) => {
 };
 
 const getAllOrderByUserIdFromDB = async (userId: number) => {
+  // check if user already exists
   if (await User.isUserExists(userId)) {
+    // filtering specific user and returning only orders properties by using project aggregation pipeline
     const result = await User.aggregate([
       { $match: { userId: userId } },
       { $project: { orders: 1, _id: 0 } },
@@ -76,7 +88,9 @@ const getAllOrderByUserIdFromDB = async (userId: number) => {
 };
 
 const getTotalPriceOfUserByIdFromDB = async (userId: number) => {
+  // check if user already exists
   if (await User.isUserExists(userId)) {
+    // selecting specific user, unwinding orders array, grouping to find total price and showing only total price in the response
     const result = await User.aggregate([
       { $match: { userId: userId } },
       { $unwind: '$orders' },

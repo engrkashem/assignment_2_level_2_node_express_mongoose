@@ -1,6 +1,6 @@
-/********** Interfaces for Schema **********/
-
 import { Model } from 'mongoose';
+
+/********** Interfaces for Schema **********/
 
 // sub interfaces
 export type TFullName = {
@@ -35,6 +35,7 @@ export type TUser = {
 };
 
 /********** Model for Custom static method **********/
+// creating a method to check if a specific user exists
 export interface UserModel extends Model<TUser> {
   // eslint-disable-next-line no-unused-vars
   isUserExists(userId: number): Promise<TUser | null>;

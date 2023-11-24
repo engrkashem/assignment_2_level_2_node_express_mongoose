@@ -15,12 +15,13 @@ const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
 
-    // zod validation
+    // validating user data using zod
     const zodParsedUserData = userValidationSchema.parse(userData);
 
     // calling service function to create user to DB
     const result = await userServices.createUserToDB(zodParsedUserData);
 
+    // getSuccessResponse and getErrorResponse are two utility function to format response
     res
       .status(201)
       .json(getSuccessResponse(true, 'User is created successfully', result));
@@ -35,8 +36,10 @@ const createUser = async (req: Request, res: Response) => {
 
 const getAllUser = async (req: Request, res: Response) => {
   try {
+    // calling service function to get all available users
     const result = await userServices.getAllUsersFromDB();
 
+    // getSuccessResponse and getErrorResponse are two utility function to format response
     res
       .status(200)
       .json(
@@ -51,8 +54,10 @@ const getUserById = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
 
+    // calling service function get a specific user
     const result = await userServices.getUserByIdFromDB(parseInt(userId));
 
+    // getSuccessResponse and getErrorResponse are two utility function to format response
     res
       .status(200)
       .json(getSuccessResponse(true, 'User data is available', result));
@@ -79,6 +84,7 @@ const updateUserById = async (req: Request, res: Response) => {
       updatedUserData,
     );
 
+    // getSuccessResponse and getErrorResponse are two utility function to format response
     res
       .status(200)
       .json(getSuccessResponse(true, 'User info Updated successfully', result));
@@ -93,9 +99,11 @@ const deleteUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
 
+    // calling service function to delete a specific user
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
     const result = await userServices.deleteUserFromDB(parseInt(userId));
 
+    // getSuccessResponse and getErrorResponse are two utility function to format response
     res
       .status(200)
       .json(getSuccessResponse(true, 'User deleted successfully!', null));
@@ -111,14 +119,17 @@ const addProduct = async (req: Request, res: Response) => {
     const { userId } = req.params;
     const order: object = req.body;
 
+    // validating order object using ZOD
     const zodParsedOrder: TOrder = orderValidationSchema.parse(order);
 
+    // calling service function to add an order to a specific user orders array
     // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     const result = await userServices.addProductToUserIntoDB(
       parseInt(userId),
       zodParsedOrder,
     );
 
+    // getSuccessResponse and getErrorResponse are two utility function to format response
     res
       .status(200)
       .json(getSuccessResponse(true, 'Order created successfully!', null));
@@ -133,10 +144,12 @@ const getAllOrderByUserId = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
 
+    // calling service function to get all orders of a specific user
     const result = await userServices.getAllOrderByUserIdFromDB(
       parseInt(userId),
     );
 
+    // getSuccessResponse and getErrorResponse are two utility function to format response
     res
       .status(200)
       .json(getSuccessResponse(true, 'Order fetched successfully!', result[0]));
@@ -149,10 +162,11 @@ const getTotalPriceOfUserById = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
 
+    // calling service function to get total price of a specific user
     const result = await userServices.getTotalPriceOfUserByIdFromDB(
       parseInt(userId),
     );
-
+    // getSuccessResponse and getErrorResponse are two utility function to format response
     res
       .status(200)
       .json(

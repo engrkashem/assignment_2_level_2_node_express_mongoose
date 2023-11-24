@@ -111,7 +111,7 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-/********** Custom static method **********/
+/********** Custom static method (check if a specific user exists) **********/
 userSchema.statics.isUserExists = async (userId: number) => {
   return await User.exists({ userId: userId });
 };
