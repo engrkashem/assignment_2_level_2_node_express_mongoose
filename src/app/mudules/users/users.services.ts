@@ -64,6 +64,17 @@ const addProductToUserIntoDB = async (userId: number, order: TOrder) => {
   throw new Error('User is not found');
 };
 
+const getAllOrderByUserIdFromDB = async (userId: number) => {
+  if (await User.isUserExists(userId)) {
+    const result = await User.aggregate([
+      { $match: { userId: userId } },
+      { $project: { orders: 1, _id: 0 } },
+    ]);
+    return result;
+  }
+  throw new Error('user is not found');
+};
+
 export const userServices = {
   createUserToDB,
   getAllUsersFromDB,
@@ -71,4 +82,5 @@ export const userServices = {
   deleteUserFromDB,
   updateUserByIdFromDB,
   addProductToUserIntoDB,
+  getAllOrderByUserIdFromDB,
 };

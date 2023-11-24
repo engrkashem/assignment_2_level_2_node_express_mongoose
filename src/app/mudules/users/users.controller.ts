@@ -129,6 +129,22 @@ const addProduct = async (req: Request, res: Response) => {
   }
 };
 
+const getAllOrderByUserId = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    const result = await userServices.getAllOrderByUserIdFromDB(
+      parseInt(userId),
+    );
+
+    res
+      .status(200)
+      .json(getSuccessResponse(true, 'Order fetched successfully!', result[0]));
+  } catch (err) {
+    res.status(404).json(getErrorResponse(false, 'Orders/User not found', err));
+  }
+};
+
 export const userControllers = {
   createUser,
   getAllUser,
@@ -136,4 +152,5 @@ export const userControllers = {
   deleteUser,
   updateUserById,
   addProduct,
+  getAllOrderByUserId,
 };

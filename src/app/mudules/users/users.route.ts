@@ -22,6 +22,10 @@ router.delete('/:userId', userControllers.deleteUser);
 
 /********** Orders endpoint routes **********/
 
+// add order
 router.put('/:userId/orders', userControllers.addProduct);
+
+// retrieve all order of a user
+router.get('/:userId/orders', userControllers.getAllOrderByUserId);
 
 export const userRoutes = router;
