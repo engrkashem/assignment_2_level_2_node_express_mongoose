@@ -23,7 +23,7 @@ const createUser = async (req: Request, res: Response) => {
 
     // getSuccessResponse and getErrorResponse are two utility function to format response
     res
-      .status(201)
+      .status(200)
       .json(getSuccessResponse(true, 'User is created successfully', result));
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err) {
