@@ -2,6 +2,10 @@ import { TUser } from './users.interface';
 import { User } from './users.model';
 
 const createUserToDB = async (userData: TUser) => {
+  // check if user already exists
+  if (await User.isUserExists(userData.userId)) {
+    throw new Error('User Already Exists');
+  }
   // creating instance
   const user = new User(userData);
 
@@ -21,15 +25,25 @@ const getAllUsersFromDB = async () => {
 const getUserByIdFromDB = async (userId: number) => {
   const response = await User.isUserExists(userId);
 
-  if (!response) throw new Error('User is not found. Invalid user ID');
+  if (!response) {
+    throw new Error('User does not exists.');
+  }
 
   const result = await User.findOne({ userId: userId });
 
   return result;
 };
 
+const deleteUserFromDB = async (userId: number) => {
+  if (await User.isUserExists(userId)) {
+    const result = await User.deleteOne({ userId: userId });
+    return result;
+  } else throw new Error('User not found');
+};
+
 export const userServices = {
   createUserToDB,
   getAllUsersFromDB,
   getUserByIdFromDB,
+  deleteUserFromDB,
 };

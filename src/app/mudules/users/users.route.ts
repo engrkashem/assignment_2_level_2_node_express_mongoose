@@ -10,6 +10,11 @@ router.post('/', userControllers.createUser);
 
 // retrieve all user
 router.get('/', userControllers.getAllUser);
+
+// retrieve user by userId
 router.get('/:userId', userControllers.getUserById);
+
+// delete user bu userId from db
+router.delete('/:userId', userControllers.deleteUser);
 
 export const userRoutes = router;

@@ -10,10 +10,10 @@ const getSuccessResponse = (success: boolean, message: string, data: any) => {
 const getErrorResponse = (success: boolean, message: string, error: any) => {
   return {
     success,
-    message: message,
+    message,
     error: {
       code: 404,
-      description: error,
+      description: error || message,
     },
   };
 };

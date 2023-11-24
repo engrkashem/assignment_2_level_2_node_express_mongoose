@@ -19,7 +19,9 @@ const createUser = async (req: Request, res: Response) => {
     res
       .status(201)
       .json(getSuccessResponse(true, 'User is created successfully', result));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err) {
+    // console.log(err);
     res
       .status(400)
       .json(getErrorResponse(false, 'User creation request is denied', err));
@@ -49,8 +51,26 @@ const getUserById = async (req: Request, res: Response) => {
     res
       .status(200)
       .json(getSuccessResponse(true, 'User data is available', result));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(404).json(getErrorResponse(false, 'User Does not exists', err));
+  }
+};
+
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+    const result = await userServices.deleteUserFromDB(parseInt(userId));
+
+    res.status(200).json({
+      success: true,
+      message: 'User deleted successfully!',
+      data: null,
+    });
   } catch (err) {
-    res.status(400).json(getErrorResponse(false, 'Invalid request', err));
+    res.status(404).json(getErrorResponse(false, 'User not found', err));
   }
 };
 
@@ -58,4 +78,5 @@ export const userControllers = {
   createUser,
   getAllUser,
   getUserById,
+  deleteUser,
 };
